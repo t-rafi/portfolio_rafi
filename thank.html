@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Thank you — Message Received</title>
+    <style>
+        :root {
+            --bg: #0f1724;
+            /* dark navy */
+            --card: #0b1220;
+            --accent: #06b6d4;
+            /* teal */
+            --muted: #9aa7b2;
+            --glass: rgba(255, 255, 255, 0.04);
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, 'Helvetica Neue', Arial;
+            color: #e6eef3;
+            background: linear-gradient(180deg, var(--bg), #071022);
+            -webkit-font-smoothing: antialiased
+        }
+
+        /* center container for demo (you can remove when embedding) */
+        .wrap {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 32px
+        }
+
+        /* card */
+        .thank-card {
+            width: min(520px, 92vw);
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent);
+            border-radius: 16px;
+            padding: 28px 28px 20px;
+            backdrop-filter: blur(6px);
+            box-shadow: 0 8px 30px rgba(2, 6, 23, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            text-align: center;
+            transform: translateY(20px) scale(.98);
+            opacity: 0
+        }
+
+        /* show animation */
+        .thank-card.show {
+            animation: cardIn .55s cubic-bezier(.2, .9, .25, 1) forwards
+        }
+
+        @keyframes cardIn {
+            to {
+                transform: none;
+                opacity: 1
+            }
+        }
+
+        .tick {
+            width: 96px;
+            height: 96px;
+            border-radius: 999px;
+            background: linear-gradient(135deg, var(--accent), #7dd3fc);
+            display: inline-grid;
+            place-items: center;
+            margin: 0 auto 18px;
+            box-shadow: 0 8px 30px rgba(6, 22, 29, 0.4), inset 0 -6px 12px rgba(255, 255, 255, 0.06);
+            position: relative;
+            overflow: visible
+        }
+
+        .tick svg {
+            transform: scale(.9)
+        }
+
+        h1 {
+            font-size: 20px;
+            margin: 0 0 6px
+        }
+
+        p.lead {
+            margin: 0 0 16px;
+            color: var(--muted)
+        }
+
+        .sub {
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 18px
+        }
+
+        /* confetti (pure CSS) */
+        .confetti {
+            position: absolute;
+            inset: 0;
+            pointer-events: none
+        }
+
+        .confetti i {
+            position: absolute;
+            display: block;
+            width: 8px;
+            height: 14px;
+            border-radius: 2px;
+            background: var(--accent);
+            opacity: 0;
+            transform-origin: center;
+            animation: fall 1.2s linear forwards
+        }
+
+        /* generate positions and colors */
+        .confetti i:nth-child(1) {
+            left: 8%;
+            animation-delay: 0s;
+            background: #06b6d4
+        }
+
+        .confetti i:nth-child(2) {
+            left: 18%;
+            animation-delay: .05s;
+            background: #f59e0b
+        }
+
+        .confetti i:nth-child(3) {
+            left: 28%;
+            animation-delay: .07s;
+            background: #ef4444
+        }
+
+        .confetti i:nth-child(4) {
+            left: 38%;
+            animation-delay: .12s;
+            background: #84cc16
+        }
+
+        .confetti i:nth-child(5) {
+            left: 48%;
+            animation-delay: .15s;
+            background: #a78bfa
+        }
+
+        .confetti i:nth-child(6) {
+            left: 58%;
+            animation-delay: .18s;
+            background: #fb7185
+        }
+
+        .confetti i:nth-child(7) {
+            left: 68%;
+            animation-delay: .22s;
+            background: #06b6d4
+        }
+
+        .confetti i:nth-child(8) {
+            left: 78%;
+            animation-delay: .26s;
+            background: #f97316
+        }
+
+        .confetti i:nth-child(9) {
+            left: 88%;
+            animation-delay: .3s;
+            background: #06b6d4
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-20px) rotate(0deg);
+                opacity: 1
+            }
+
+            60% {
+                opacity: 1
+            }
+
+            100% {
+                transform: translateY(160px) rotate(360deg);
+                opacity: 0
+            }
+        }
+
+        /* buttons */
+        .actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center
+        }
+
+        .btn {
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 0;
+            background: var(--glass);
+            color: var(--muted);
+            cursor: pointer;
+            font-weight: 600
+        }
+
+        .btn.primary {
+            background: linear-gradient(90deg, var(--accent), #7dd3fc);
+            color: #03171a
+        }
+
+        /* small helpful note for modal use */
+        .hint {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 12px
+        }
+
+        /* accessibility reduce motion */
+        @media (prefers-reduced-motion:reduce) {
+            .thank-card {
+                transition: none;
+                animation: none
+            }
+
+            .confetti i {
+                animation: none;
+                opacity: 1;
+                transform: none
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- <div class="wrap">
+        <div class="thank-card" id="thankCard" role="dialog" aria-labelledby="tyTitle" aria-modal="true">
+            <div class="tick" aria-hidden="true">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="11" stroke-opacity="0.06" stroke="#fff" stroke-width="1" />
+                    <path d="M7.5 12.5l2.5 2.5L16.5 9" stroke="#042f2f" stroke-width="2.2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+            </div>
+            <h1 id="tyTitle">Thank you — message received</h1>
+            <p class="lead">I have received your message. I'll review it and get back to you soon.</p>
+            <p class="sub">This confirmation page is purely visual — close or continue to return to the portfolio.</p>
+
+            <div class="actions">
+                <button class="btn" id="closeBtn">Close</button>
+                <button class="btn primary" id="backBtn">Back to portfolio</button>
+            </div>
+            <div class="hint">Auto closes in 10 seconds. You can also close manually.</div>
+
+            <div class="confetti" aria-hidden="true">
+                <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+            </div>
+        </div>
+    </div> -->
+
+    <!-- <script>
+        (function () {
+            const card = document.getElementById('thankCard');
+            const closeBtn = document.getElementById('closeBtn');
+            const backBtn = document.getElementById('backBtn');
+
+            function show() {
+                card.classList.add('show');
+            }
+
+            function close() {
+                card.classList.remove('show');
+            }
+
+            function redirectBack() {
+                window.location.href = '/'; // এখানে '/' এর জায়গায় তোমার portfolio page এর path দাও
+            }
+
+            show();
+
+            let t = setTimeout(() => {
+                redirectBack();
+            }, 10000); // 10000 ms = 10 seconds
+
+
+            closeBtn.addEventListener('click', () => {
+                clearTimeout(t);
+                close();
+            });
+
+            backBtn.addEventListener('click', () => {
+                clearTimeout(t);
+                redirectBack();
+            });
+        })();
+    </script> -->
+    <script>
+        alert('Thank you for your message! I will get back to you soon.');
+        window.location.href = 'index-portfolio.html';
+    </script>
+
+
+</body>
+
+</html>
